@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学生信息表</title>
+	<script src="__STATIC__/jquery-1.8.3.min.js"></script>
+</head>
+<body style="text-align:center;">
+<h1>学生信息表</h1>
+<h3><a href="/index/stu/index">查看学生信息</a></h3>
+<h3><a href="/index/stu/add">添加学生信息</a></h3>
+<!-- <h3><a href="add">添加学生信息</a></h3>
+<h3><a href="{:url('Stu/add')}">添加学生信息</a></h3> -->
+<table style="margin:0 auto;" cellspacing="0px" cellpadding="1px" border="1px">
+	<tr>
+		<th>编号</th>
+		<th>姓名</th>
+		<th>年龄</th>
+		<th>班级</th>
+		<th>性别</th>
+		<th>操作</th>
+	</tr>
+	{foreach $list as $v}
+		<tr>
+			<td>{$v.id}</td>
+			<td>{$v.name}</td>
+			<td>{$v.age}</td>
+			<td>{$v.class}</td>
+			<td>{$v.sex}</td>
+			<td>
+				<a href="javascript:;" onclick="location='{:url('Stu/edit',['id'=>$v.id])}'">修改1</a>
+				<a href="{:url('Stu/edit')}?id={$v.id}">修改1</a>
+				<a href="/index/stu/edit?id={$v.id}" title="">修改2</a>
+				<a href="javascript:;" onclick="del($(this))" name='{$v.id}'>删除</a>
+			</td>
+		</tr>
+	{/foreach}
+	{volist name="list" id="vo" mod="3" }
+	{$vo.name}
+	{eq name="mod" value="1"}<br/>{/eq}
+	{/volist}
+	<script type="text/javascript">
+		function del($this){
+			id=$this.attr('name');
+			alert(id);
+			$.ajax({
+				type:'post',
+				url:"{:url('Stu/del')}",
+				data:{id:id},
+				async:true,
+				dataType:'text',
+				success:function(){
+					$this.parents('tr').remove();
+				},
+				error:function(){
+					alert('删除失败');
+				}
+			})
+		}
+
+		
+	</script>
+</table>
+</body>
+</html>
